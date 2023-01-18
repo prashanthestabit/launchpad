@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
+use App\Models\Experience;
+use App\Models\Subject;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +19,9 @@ use App\Http\Controllers\StudentController;
 |
 */
 
-Route::post("register", [StudentController::class, 'register']);
+Route::post("register/student", [StudentController::class, 'register']);
+Route::post("register/teacher", [TeacherController::class, 'register']);
+
 
 Route::group([
     'middleware' => 'api',
@@ -28,12 +33,23 @@ Route::group([
     Route::post('me', [AuthController::class,'me']);
 });
 
-/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
 
 Route::middleware(['jwt.auth'])->group(function() {
     Route::get('/user', function() {
         return Auth::user();
     });
+
+    Route::get('/experiences', function() {
+        return Experience::all(['id','name']);
+    });
+
+    Route::get('/subjects', function() {
+        return Subject::all(['id','name']);
+    });
+
+    Route::get("student/approved/{id}", [StudentController::class, 'approved']);
+    Route::post("assigned/teacher", [StudentController::class, 'assignedTeacher']);
+
+    Route::get("teacher/approved/{id}", [TeacherController::class, 'approved']);
+
 });

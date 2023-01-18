@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class StudentRequest extends FormRequest
+class TeacherRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,8 +29,8 @@ class StudentRequest extends FormRequest
             "name" => "required",
             "email" => "required|email|unique:users",
             "address" => "required",
-            "current_school" => "required",
-            "parents_details" => "required",
+            "experience" => "required",
+            "exp_subjects" => "required",
             "image" => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ];
     }

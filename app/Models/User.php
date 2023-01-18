@@ -22,7 +22,8 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
-        'role_id'
+        'role_id',
+        'status_id',
     ];
 
     /**
@@ -66,5 +67,25 @@ class User extends Authenticatable implements JWTSubject
 
     public function role() {
         return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    public function teacher()
+    {
+        return $this->hasOne(StudentTeacher::class);
+    }
+
+    public function experience()
+    {
+        return $this->hasOne(UserExperience::class);
+    }
+
+    public function subjects()
+    {
+        return $this->hasMany(UserSubject::class);
     }
 }

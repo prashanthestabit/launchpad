@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class StudentRequest extends FormRequest
+class AssignedTeacherRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,12 +26,8 @@ class StudentRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => "required",
-            "email" => "required|email|unique:users",
-            "address" => "required",
-            "current_school" => "required",
-            "parents_details" => "required",
-            "image" => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
+            "user_id" => "required",
+            "teacher_id" => "required",
         ];
     }
 
