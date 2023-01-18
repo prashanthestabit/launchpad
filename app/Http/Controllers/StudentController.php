@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Events\NewUserApproved;
+use App\Notifications\NewStudentAssignedNotification;
 
 class StudentController extends Controller
 {
@@ -91,6 +93,12 @@ class StudentController extends Controller
                     'created_at' => now(),
                 ]);
 
+            //notification for the teacher, when there is a new student assigned to him
+            $teacher = User::find($request->input('teacher_id'));
+            $student = User::find($request->input('user_id'));
+
+            $teacher->notify(new NewStudentAssignedNotification($student));
+
             if ($rs) {
                 return response()->json([
                     'message' => __('messages.student.teacher_assigned'),
@@ -115,12 +123,14 @@ class StudentController extends Controller
     public function approvedUser($id)
     {
         try {
-            $student = User::findOrFail($id);
-            $student->status_id = self::STATUSAPPROVED;
-            $student->updated_at = now();
-            $student->save();
+            $user = User::findOrFail($id);
+            $user->status_id = self::STATUSAPPROVED;
+            $user->updated_at = now();
+            $user->save();
 
-            return $student;
+            event(new NewUserApproved($user));
+
+            return $user;
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return response()->json(['error' => __('messages.error')], 500);

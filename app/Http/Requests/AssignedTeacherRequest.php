@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use App\Rules\UserApproved;
 
 class AssignedTeacherRequest extends FormRequest
 {
@@ -26,10 +27,11 @@ class AssignedTeacherRequest extends FormRequest
     public function rules()
     {
         return [
-            "user_id" => "required",
-            "teacher_id" => "required",
+            "user_id" => ['required', new UserApproved($this->user_id)],
+            "teacher_id" => ['required', new UserApproved($this->teacher_id)],
         ];
     }
+
 
     public function failedValidation(Validator $validator)
     {
