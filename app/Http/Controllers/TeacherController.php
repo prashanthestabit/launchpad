@@ -75,6 +75,10 @@ class TeacherController extends Controller
         }
     }
 
+    /**
+     * For User Register
+     * Duplicate Code in StudentController
+     */
     protected function userRegister($request)
     {
         DB::beginTransaction();

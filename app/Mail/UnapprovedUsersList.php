@@ -7,20 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ApprovedEmail extends Mailable
+class UnapprovedUsersList extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
+    public $unapprovedUsers;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($unapprovedUsers)
     {
-        $this->user = $user;
+        $this->unapprovedUsers = $unapprovedUsers;
     }
 
     /**
@@ -30,10 +30,10 @@ class ApprovedEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.approved')
-        ->subject('Approved By admin!')
+        return $this->view('emails.unapproved-users-list')
+        ->subject('List of Unapproved Users!')
         ->with([
-            'name' => $this->user->name,
+            'unapprovedUsers' => $this->unapprovedUsers,
         ]);
     }
 }

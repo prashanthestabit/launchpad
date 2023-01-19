@@ -33,6 +33,8 @@ return [
     |
     */
 
+    'admin'  => 'prashantpandey.hestabit@gmail.com',
+
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',

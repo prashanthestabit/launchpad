@@ -31,7 +31,7 @@ class NewStudentAssignedNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail','database'];
     }
 
     /**
