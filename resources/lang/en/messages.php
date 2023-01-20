@@ -16,7 +16,7 @@ return [
     'error' => 'Error!!',
 
     'admin' => [
-        'permission' => 'Require admin approval for website access',
+        'permission' => 'You are not registered, if yes then require admin approval for website access',
         'unapproved_user' => 'No unApproved User Found',
         'unapproved_user_list' => 'Unapproved Users List',
     ],

@@ -27,7 +27,7 @@ class UserApproved implements Rule
     public function passes($attribute, $value)
     {
         $user = User::find($value);
-        if($user->status_id == 2) {
+        if($user && $user->status_id == 2) {
             return true;
         }
         return false;
