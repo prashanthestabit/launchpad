@@ -62,7 +62,7 @@ class TeacherController extends Controller
 
             $teacher = $st->approvedUser($id);
 
-            if ($teacher) {
+            if (is_numeric($teacher)) {
                 return response()->json([
                     'message' => __('messages.teacher.approved'),
                 ], 200);

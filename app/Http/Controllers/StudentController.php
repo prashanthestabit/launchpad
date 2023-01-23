@@ -59,8 +59,7 @@ class StudentController extends Controller
             }
 
             $student = $this->approvedUser($id);
-
-            if ($student) {
+            if (is_numeric($student)) {
                 return response()->json([
                     'message' => __('messages.student.approved'),
                 ], 200);
@@ -130,7 +129,7 @@ class StudentController extends Controller
 
             event(new NewUserApproved($user));
 
-            return $user;
+            return $user->id;
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return response()->json(['error' => __('messages.error')], 500);
