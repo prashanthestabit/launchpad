@@ -19,8 +19,12 @@ use App\Models\Subject;
 |
 */
 
+Route::group([
+    'middleware' => 'throttle:1,1',
+], function ($router) {
 Route::post("register/student", [StudentController::class, 'register']);
 Route::post("register/teacher", [TeacherController::class, 'register']);
+});
 
 
 Route::group([

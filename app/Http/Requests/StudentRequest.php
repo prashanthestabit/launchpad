@@ -26,12 +26,13 @@ class StudentRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => "required",
+            "name" => "required|min:2|max:191",
             "email" => "required|email|unique:users",
-            "address" => "required",
-            "current_school" => "required",
-            "parents_details" => "required",
-            "image" => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
+            "address" => "required|min:10|max:255",
+            "current_school" => "required|min:2|max:191",
+            "previous_school" => "required|min:2|max:191",
+            "parents_details" => "required|min:2|max:191",
+            "image" => ['required','image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ];
     }
 
