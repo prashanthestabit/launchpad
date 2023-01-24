@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ApprovedEmail;
+use Illuminate\Support\Facades\Log;
 
 class SendAprovedEmail
 {
@@ -32,7 +33,7 @@ class SendAprovedEmail
             $user = $event->user;
             Mail::to($user->email)->send(new ApprovedEmail($user));
         }catch (\Exception $e) {
-            \Log::error($e->getMessage());
+            Log::error($e->getMessage());
         }
 
     }
