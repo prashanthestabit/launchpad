@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Events\NewUserApproved;
 use App\Notifications\NewStudentAssignedNotification;
+use Pusher\Pusher;
 
 class StudentController extends Controller
 {
@@ -97,6 +98,20 @@ class StudentController extends Controller
             $student = User::find($request->input('user_id'));
 
             $teacher->notify(new NewStudentAssignedNotification($student));
+
+            $options = array(
+                'cluster' => config('broadcasting.connections.pusher.options.cluster'),
+                'useTLS' => true
+            );
+            $pusher = new Pusher(
+                config('broadcasting.connections.pusher.key'),
+                config('broadcasting.connections.pusher.secret'),
+                config('broadcasting.connections.pusher.app_id'),
+                $options
+            );
+
+            $data['message'] = $student->name.' student has been assigned to you.';
+            $pusher->trigger('my-channel', 'my-event', $data);
 
             if ($rs) {
                 return response()->json([

@@ -7,6 +7,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Models\Experience;
 use App\Models\Subject;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------

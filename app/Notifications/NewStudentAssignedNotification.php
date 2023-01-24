@@ -6,12 +6,19 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Broadcasting\InteractsWithSockets;
 
-class NewStudentAssignedNotification extends Notification implements ShouldQueue
+
+class NewStudentAssignedNotification extends Notification implements ShouldQueue, ShouldBroadcast
 {
     use Queueable;
 
+    use InteractsWithSockets;
+
     public $student;
+
 
     /**
      * Create a new notification instance.
@@ -23,6 +30,8 @@ class NewStudentAssignedNotification extends Notification implements ShouldQueue
         $this->student = $student;
     }
 
+
+
     /**
      * Get the notification's delivery channels.
      *
@@ -31,7 +40,7 @@ class NewStudentAssignedNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail','database'];
+        return ['database'];
     }
 
     /**
@@ -40,13 +49,13 @@ class NewStudentAssignedNotification extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    /*public function toMail($notifiable)
     {
         return (new MailMessage)
             ->line('A new student has been assigned to you.')
             ->line('Name: '.$this->student->name)
             ->line('Email: '.$this->student->email);
-    }
+    }*/
 
 
     /**
@@ -61,5 +70,37 @@ class NewStudentAssignedNotification extends Notification implements ShouldQueue
             'message' => 'A new student has been assigned to you.',
             'student_name' => $this->student->name
         ];
+    }
+
+    /**
+     * Get the broadcastable representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return BroadcastMessage
+     */
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage([
+            'data' => [
+                'message' => 'A new student has been assigned to you.',
+                'student_name' => $this->student->name
+            ]
+        ]);
+    }
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return Channel|array
+     */
+    public function broadcastOn()
+    {
+        return ['my-channel'];
+    }
+
+
+    public function broadcastAs()
+    {
+        return 'my-event';
     }
 }

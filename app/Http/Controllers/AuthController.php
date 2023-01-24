@@ -27,7 +27,7 @@ class AuthController extends Controller
     /**
      * @param $request
      * Api use for login admin,students,teachers
-     * 
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
@@ -60,7 +60,7 @@ class AuthController extends Controller
 
             return response()->json(['error' => $e->getMessage()], 500);
         }
-        
+
     }
 
     /**
