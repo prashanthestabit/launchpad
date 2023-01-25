@@ -18,9 +18,9 @@ class TeacherController extends Controller
 {
     const TEACHERROLE = 3;
 
-    const STATUSPENDING = 1;
-
-    const STATUSAPPROVED = 2;
+    const STATUS = [
+        'pending' => 1,
+    ];
 
     const DEFAULTPASSWORD = 'password';
 
@@ -88,7 +88,7 @@ class TeacherController extends Controller
                 "email" => $request->input('email'),
                 'password' => Hash::make(self::DEFAULTPASSWORD),
                 'role_id' => self::TEACHERROLE,
-                'status_id' => self::STATUSPENDING,
+                'status_id' => self::STATUS['pending'],
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
             ];

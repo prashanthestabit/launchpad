@@ -19,6 +19,11 @@ class StudentController extends Controller
 {
     const STUDENTROLE = 2;
 
+    const STATUS = [
+        'pending' => 1,
+        'approved' => 2,
+    ];
+
     const STATUSPENDING = 1;
 
     const STATUSAPPROVED = 2;
@@ -84,14 +89,14 @@ class StudentController extends Controller
                 return response()->json(['error' => __('messages.error')], 500);
             }
 
-            $rs = StudentTeacher::updateOrCreate(
+            $rs = StudentTeacher::firstOrNew(
                 [
                     'user_id' => $request->input('user_id'),
                 ],
                 [
                     'teacher_id' => $request->input('teacher_id'),
                     'created_at' => now(),
-                ]);
+                ])->save();
 
             //notification for the teacher, when there is a new student assigned to him
             $teacher = User::find($request->input('teacher_id'));
@@ -112,6 +117,7 @@ class StudentController extends Controller
 
             $data['message'] = $student->name.' student has been assigned to you.';
             $pusher->trigger('my-channel', 'my-event', $data);
+
 
             if ($rs) {
                 return response()->json([
@@ -138,7 +144,7 @@ class StudentController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            $user->status_id = self::STATUSAPPROVED;
+            $user->status_id = self::STATUS['approved'];
             $user->updated_at = now();
             $user->save();
 
@@ -160,7 +166,7 @@ class StudentController extends Controller
                 "email" => $request->input('email'),
                 'password' => Hash::make(self::DEFAULTPASSWORD),
                 'role_id' => self::STUDENTROLE,
-                'status_id' => self::STATUSPENDING,
+                'status_id' => self::STATUS['pending'],
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
             ];
